@@ -1,0 +1,19 @@
+function sens_env = sensitivity_environmental(params,env)
+
+variation = [-0.3 0 0.3];
+
+sens_env.salinity = run_sensitivity_NSC(params,env,'salinity',variation,'environment');
+sens_env.temperature = run_sensitivity_NSC(params,env,'temperature',variation,'environment');
+sens_env.irradiance = run_sensitivity_NSC(params,env,'irradiance',variation,'environment');
+
+T = table( {'Salinity';'Temperature';'Irradiance'},...
+[sens_env.salinity.NSC_Qp; sens_env.temperature.NSC_Qp; sens_env.irradiance.NSC_Qp],...
+[sens_env.salinity.NSC_Cp; sens_env.temperature.NSC_Cp; sens_env.irradiance.NSC_Cp],...
+[sens_env.salinity.NSC_SEC; sens_env.temperature.NSC_SEC; sens_env.irradiance.NSC_SEC],...
+[sens_env.salinity.NSC_Recovery; sens_env.temperature.NSC_Recovery; sens_env.irradiance.NSC_Recovery],...
+'VariableNames',...
+{'Parameter','NSC_Qp','NSC_Cp','NSC_SEC','NSC_Recovery'});
+
+writetable(T,'Environmental_Sensitivity.csv');
+
+end
